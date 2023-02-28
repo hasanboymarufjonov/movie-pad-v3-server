@@ -31,3 +31,33 @@ const signup = async (req, res) => {
     responseHandler.error(res);
   }
 };
+
+const signin = async (req, res) => {
+  try {
+    const { username, password } = req.body;
+
+    const user = await userModel
+      .findOne({ username })
+      .select("username password salt id displayName");
+    if (!user) return responseHandler.badrequest(res, "User doesn't exist");
+    if (!user.validPassword(password))
+      return responseHandler.badrequest(res, "Password is incorrect");
+
+    const token = jsonwebtoken.sign(
+      { data: user.id },
+      process.env.TOKEN_SECRET,
+      { expiresIn: "24h" }
+    );
+
+    user.password = undefined;
+    user.salt = undefined;
+
+    responseHandler.created(res, {
+      token,
+      ...user._doc,
+      id: user.id,
+    });
+  } catch {
+    responseHandler.error(res);
+  }
+};
