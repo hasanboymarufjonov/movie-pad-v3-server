@@ -1,33 +1,28 @@
-const responsezWithData = (res, statusCode, data) =>
-  res.status(statusCode).json(data);
+const responseWithData = (res, statusCode, data) => res.status(statusCode).json(data);
 
-const error = (res) =>
-  responsezWithData(res, 500, {
-    status: 500,
-    message: "Something wrong!",
-  });
+const error = (res) => responseWithData(res, 500, {
+  status: 500,
+  message: "Oops! Something worng!"
+});
 
-const badrequest = (res, message) =>
-  responsezWithData(res, 400, {
-    status: 400,
-    message,
-  });
+const badrequest = (res, message) => responseWithData(res, 400, {
+  status: 400,
+  message
+});
 
-const ok = (res, data) => responsezWithData(res, 200, data);
+const ok = (res, data) => responseWithData(res, 200, data);
 
-const created = (res, data) => responsezWithData(res, 201, data);
+const created = (res, data) => responseWithData(res, 201, data);
 
-const unauthorize = (res) =>
-  responsezWithData(res, 401, {
-    status: 401,
-    message: "Unathorized",
-  });
+const unauthorize = (res) => responseWithData(res, 401, {
+  status: 401,
+  message: "Unathorized"
+});
 
-const notfound = (res) =>
-  responsezWithData(res, 404, {
-    status: 404,
-    meessage: "Not found",
-  });
+const notfound = (res) => responseWithData(res, 404, {
+  status: 404,
+  message: "Resource not found"
+});
 
 export default {
   error,
@@ -35,5 +30,5 @@ export default {
   ok,
   created,
   unauthorize,
-  notfound,
+  notfound
 };
